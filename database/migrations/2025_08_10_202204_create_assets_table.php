@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('format')->nullable();
             $table->decimal('price', 8, 2)->default(0.00);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
