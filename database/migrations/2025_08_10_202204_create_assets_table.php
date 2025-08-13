@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('category')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->enum('type', ['image', 'video', '3d_model']);
+            $table->string('category')->constrained()->onDelete('cascade');
             $table->string('file_path');
             $table->string('preview_path')->nullable();
-            $table->enum('type', ['image', 'video', '3d_model']);
             $table->string('format')->nullable();
             $table->decimal('price', 8, 2)->default(0.00);
             $table->timestamps();
