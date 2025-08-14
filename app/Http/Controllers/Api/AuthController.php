@@ -99,22 +99,4 @@ class AuthController extends Controller
             'message' => 'Account activated successfully.',
         ], 200);
     }
-
-    // Delete user account permanently
-    public function deleteAccount($id)
-    {
-        $user = User::withTrashed()->find($id);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found.',
-            ], 404);
-        }
-
-        $user->forceDelete();
-
-        return response()->json([
-            'message' => 'Account deleted permanently.',
-        ], 200);
-    }
 }
