@@ -65,7 +65,6 @@ class AuthController extends Controller
     // Desactivate user account
     public function desactiveAccount(Request $request)
     {
-
         $request->validate(['password' => 'required|string']);
 
         $user = $request->user();
@@ -91,7 +90,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'User not found.',
-            ], 204);
+            ], 404);
         }
 
         $user->restore();
@@ -109,7 +108,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'User not found.',
-            ], 204);
+            ], 404);
         }
 
         $user->forceDelete();
