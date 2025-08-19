@@ -46,7 +46,7 @@ class AssetController extends Controller
             'type' => 'required|in:image,video,3d_model',
             'category' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240', // Changed from file_path
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
         ]);
 
         $disk = $validated['price'] > 0 ? 'private' : 'public';
@@ -142,7 +142,6 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($id);
 
-        // Se quiser verificar se o asset pertence ao usuário logado
         if ($asset->user_id !== auth()->id()) {
             return response()->json(['message' => 'Unauthorized.'], 403);
         }

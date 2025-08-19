@@ -21,14 +21,14 @@ class OrderSeeder extends Seeder
 
         // Create 15 orders
         foreach ($users as $user) {
-            $numberOfOrders = rand(1, 3); // 1-3 orders per user
+            $numberOfOrders = rand(1, 3);
 
             for ($i = 0; $i < $numberOfOrders; $i++) {
                 // Create order
                 $order = Order::create([
                     'user_id' => $user->id,
                     'status' => rand(0, 1) ? 'pending' : 'completed',
-                    'total' => 0, // Will be calculated based on items
+                    'total' => 0, 
                 ]);
 
                 // Add 1-5 random items to order
