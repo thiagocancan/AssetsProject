@@ -115,16 +115,44 @@ class AssetController extends Controller
             'description' => 'nullable|string',
             'type' => 'required|in:image,video,3d_model',
             'category' => 'required|string|max:100',
-            'file_path' => 'required|string',
-            'preview_path' => 'nullable|url',
-            'format' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
         ]);
 
         $asset = Asset::findOrFail($id);
 
         if ($asset->user_id !== auth()->id()) {
             return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        $disk = $validated['price'] > 0 ? 'private' : 'public';
+
+        // Se o disco de armazenamento mudou, mova o arquivo
+        if ($disk !== $asset->storage_disk && $asset->file_path) {
+            $fileContent = Storage::disk($asset->storage_disk)->get($asset->file_path);
+            Storage::disk($disk)->put($asset->file_path, $fileContent);
+            Storage::disk($asset->storage_disk)->delete($asset->file_path);
+            $validated['storage_disk'] = $disk;
+        }
+
+        if ($request->hasFile('file')) {
+            if ($asset->file_path && Storage::disk($asset->storage_disk)->exists($asset->file_path)) {
+                Storage::disk($asset->storage_disk)->delete($asset->file_path);
+            }
+
+            $path = $request->file('file')->store('assets', $disk);
+            $validated['file_path'] = $path;
+            $validated['format'] = $request->file('file')->getClientOriginalExtension();
+            $validated['storage_disk'] = $disk;
+
+            if ($validated['type'] === 'image') {
+                $validated['preview_path'] = $path;
+            } else {
+                $validated['preview_path'] = null;
+            }
+        } else {
+            unset($validated['file']);
+            $validated['storage_disk'] = $disk;
         }
 
         $asset->update($validated);
