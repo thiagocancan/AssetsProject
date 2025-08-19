@@ -76,4 +76,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function hasBought(Asset $asset)
+    {
+        return $this->orders()
+            ->where('status', 'completed')
+            ->whereHas('items', function($q) use ($asset) {
+                $q->where('asset_id', $asset->id);
+            })
+            ->exists();
+    }
 }

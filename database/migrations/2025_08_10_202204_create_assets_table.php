@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->default(0.00);
             $table->timestamps();
             $table->softDeletes();
+            $table->string('storage_disk')->default('public');
         });
     }
 

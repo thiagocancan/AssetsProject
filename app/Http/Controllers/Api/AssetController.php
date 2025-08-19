@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Asset;
 
 class AssetController extends Controller
@@ -44,20 +45,52 @@ class AssetController extends Controller
             'description' => 'nullable|string',
             'type' => 'required|in:image,video,3d_model',
             'category' => 'required|string|max:100',
-            'file_path' => 'required|string',
-            'preview_path' => 'nullable|url',
-            'format' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240', // Changed from file_path
         ]);
 
-        $asset = Asset::create(array_merge($validated, [
+        $disk = $validated['price'] > 0 ? 'private' : 'public';
+
+        $path = $request->file('file')->store('assets', $disk);
+
+        $previewPath = null;
+        if ($validated['type'] === 'image') {
+            $previewPath = $path;
+        }
+
+        $asset = Asset::create([
             'user_id' => auth()->id(),
-        ]));
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'type' => $validated['type'],
+            'category' => $validated['category'],
+            'file_path' => $path,
+            'preview_path' => $previewPath,
+            'format' => $request->file('file')->getClientOriginalExtension(),
+            'price' => $validated['price'],
+            'storage_disk' => $disk,
+        ]);
 
         return response()->json([
             'message' => 'Asset created successfully.',
             'asset' => $asset
         ], 201);
+    }
+
+    public function download(Asset $asset)
+    {
+
+        if (!$asset) {
+            return response()->json(['error' => 'Asset not found'], 404);
+        }
+
+        $user = auth()->user();
+
+        if (!$user->hasBought($asset)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return Storage::disk($asset->storage_disk)->download($asset->file_path);
     }
     
     /**

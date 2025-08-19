@@ -21,6 +21,7 @@ class Asset extends Model
         'type',
         'format',
         'price',
+        'storage_disk',
     ];
 
     // Relationships
