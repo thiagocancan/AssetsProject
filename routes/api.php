@@ -9,9 +9,17 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\OrderController;
 
+use App\Http\Controllers\Admin\AdminController;
+
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
+
+// Admin routes
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'index']);
+    Route::delete('/admin/assets/{id}', [AdminController::class, 'deleteAsset']);
+});
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -52,5 +60,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
-    Route::post('/orders/{id}/approve', [OrderController::class, 'aprrove']);
+    Route::post('/orders/{id}/approve', [OrderController::class, 'approve']);
 });
