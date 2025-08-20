@@ -41,4 +41,9 @@ class Asset extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function isPublic()
+    {
+        return $this->storage_disk === 'public';
+    }
+
 }

@@ -42,6 +42,7 @@ class UserController extends Controller
             'bio' => 'nullable|string|max:500',
             'avatar' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'nullable|string|max:100',
+            'is_admin' => 'boolean',
         ]);
 
         $user = $request->user();
@@ -60,6 +61,9 @@ class UserController extends Controller
         }
         if ($request->filled('location')) {
             $profile->location = $request->location;
+        }
+        if ($request->filled('is_admin')) {
+            $user->is_admin = $request->is_admin;
         }
 
         $user->save();

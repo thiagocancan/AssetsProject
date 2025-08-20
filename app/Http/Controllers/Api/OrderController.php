@@ -72,7 +72,7 @@ class OrderController extends Controller
     /**
      * Approve the specified order.
      */
-    public function aprrove(string $id)
+    public function approve(string $id)
     {
         $order = Order::findOrFail($id);
 

@@ -49,6 +49,8 @@ class AssetController extends Controller
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
         ]);
 
+        $this->authorize('create', Asset::class);
+
         $disk = $validated['price'] > 0 ? 'private' : 'public';
 
         $path = $request->file('file')->store('assets', $disk);
@@ -84,11 +86,7 @@ class AssetController extends Controller
             return response()->json(['error' => 'Asset not found'], 404);
         }
 
-        $user = auth()->user();
-
-        if (!$user->hasBought($asset)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        $this->authorize('download', $asset);
 
         return Storage::disk($asset->storage_disk)->download($asset->file_path);
     }
@@ -121,9 +119,7 @@ class AssetController extends Controller
 
         $asset = Asset::findOrFail($id);
 
-        if ($asset->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        }
+        $this->authorize('update', $asset);
 
         $disk = $validated['price'] > 0 ? 'private' : 'public';
 
@@ -170,9 +166,7 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($id);
 
-        if ($asset->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
-        }
+        $this->authorize('delete', $asset);
 
         $asset->delete();
 
