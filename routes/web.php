@@ -2,12 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\AssetsList;
+use App\Livewire\AssetPage;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Route::get('/', function () {
+//     return view('assets.assets-list');
+// })->name('home');
 
-Volt::route('/assets', 'pages.assets')->name('assets');
+Route::get('/', AssetsList::class)
+    ->name('home');
+
+Route::get('/asset/{asset}', AssetPage::class)
+    ->name('assets.asset-page');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
