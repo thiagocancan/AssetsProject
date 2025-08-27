@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/assets/{asset}/download', [AssetController::class, 'download']);
 
     // Review routes
+    Route::get('/reviews', [ReviewController::class, 'index']);
     Route::post('/reviews/{assetId}', [ReviewController::class, 'store']);
     Route::get('/reviews/{id}', [ReviewController::class, 'show']);
     Route::put('/reviews/{id}', [ReviewController::class, 'update']);

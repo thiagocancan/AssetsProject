@@ -11,9 +11,9 @@ class ReviewController extends Controller
     /**
      * Display all reviews of an asset.
      */
-    public function index($assetId)
+    public function index()
     {
-        $reviews = Review::where('asset_id', $assetId)->with('user.profile')->get();
+        $reviews = Review::with('user.profile')->get();
 
         if ($reviews->isEmpty()) {
             return response()->json([
