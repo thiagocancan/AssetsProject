@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body class="font-poppins text-gray-800 min-h-screen flex flex-col bg-zinc-100">
-    <header class="bg-zinc-700 text-white dark:black ">
-        <div class="mx-auto max-w-7xl px-4 flex justify-between items-center py-4">
+    <header class="bg-zinc-700 text-amber-50 dark:black ">
+        <div class="mx-auto max-w-7xl flex justify-between items-center py-4">
             <a href="{{ route('home') }}">
                 <h1 class="text-4xl">AssetsHub</h1>
             </a>
@@ -30,7 +30,7 @@
                 <li>Wishlist</li>
                 @if (auth()->check())
                     <a href="{{ route('settings.profile') }}">
-                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Avatar" class="w-8 h-8 rounded-full">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" alt="Avatar" class="w-8 h-8 rounded-full">
                     </a>
                 @else
                     <li class="bg-orange-600/90 p-2 rounded-lg"><a href="{{ route('login') }}">Sign in</a></li>
@@ -40,13 +40,13 @@
     </header>
 
     <main class="min-h-screen">
-        <div class="mx-auto max-w-7xl px-4">
+        <div class="mx-auto max-w-7xl">
             {{ $slot }}
         </div>
     </main>
 
     <footer>
-        <div class="bg-zinc-800 text-white p-[100px] mt-10">
+        <div class="bg-zinc-800 text-amber-50 p-[100px] mt-10">
             <div class="mx-auto max-w-7xl px-4 flex justify-between items-center">
                 <div class="flex flex-col gap-4 w-2/3">
                     <h2 class="text-4xl mb-8">AssetsHub</h2>

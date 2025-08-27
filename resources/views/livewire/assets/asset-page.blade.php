@@ -19,20 +19,22 @@
                     <p>Views: 1.5k</p>
                 </div>
                 <div class="flex items-center">
-                    <button wire:click="download({{ $asset->id }})" class="bg-orange-600/90 transition delay-50 duration-100 hover:-translate-y-1 hover:bg-orange-500/90 px-6 py-2 w-full text-white cursor-pointer">Download</button>
+                    <button wire:click="download({{ $asset->id }})" class="bg-orange-600/90 transition delay-50 duration-100 hover:-translate-y-1 hover:bg-orange-500/90 px-6 py-2 w-full text-amber-50 cursor-pointer">Download</button>
                     <p class="bg-green-100 px-6 py-2 text-green-600">Free</p>
                 </div>
             </div>
         </div>
     </div>
     <dl class="flex shadow-md bg-zinc-100 p-7 mt-3 justify-around">
-        <div class="flex space-x-3 items-center">
-            <img class="size-20 rounded-full" src="{{ asset('storage/' . $asset->file_path) }}" alt="Test">
-            <div class="text-sm ">
-                <h3 class="font-semibold text-zinc-700">{{ $asset->user->name }}</h3>
-                <h2 class="text-zinc-500">{{ $asset->user->profile->bio }}</h2>
+        <a href="{{ route('profile.profile-page', $asset->user_id) }}">
+            <div class="flex space-x-3 items-center">
+                <img class="size-14 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($asset->user->name) }}&background=random" alt="Test">
+                <div class="text-sm">
+                    <h3 class="font-semibold text-zinc-700">{{ $asset->user->name }}</h3>
+                    <h2 class="text-zinc-500">{{ $asset->user->profile->bio }}</h2>
+                </div>
             </div>
-        </div>
+        </a>
         <div>
     
             <div class="flex space-x-6 space-y-6 text-sm">    
@@ -68,7 +70,7 @@
         <div class="mt-12">
             @foreach ($asset->reviews as $review)
                 <div class="flex items-center space-x-3 pb-4 mb-4 border-b border-gray-300">
-                    <img class="size-10 rounded-full" src="" alt="user-avatar">
+                    <img class="size-10 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($review->user->name) }}&background=random" alt="user-avatar">
                     <div class="space-y-3 w-full">
                         <div class="flex justify-between">
                             <div class="flex items-center space-x-3">
