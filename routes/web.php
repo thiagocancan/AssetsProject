@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Livewire\AssetsList;
 use App\Livewire\AssetPage;
+use App\Livewire\ProfilePage;
 
 // Route::get('/', function () {
 //     return view('assets.assets-list');
@@ -14,6 +15,9 @@ Route::get('/', AssetsList::class)
 
 Route::get('/asset/{asset}', AssetPage::class)
     ->name('assets.asset-page');
+
+Route::get('/profile/{user_id}', ProfilePage::class)
+    ->name('profile.profile-page');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
