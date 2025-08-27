@@ -96,7 +96,7 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        $asset = Asset::where('id', $id)->get();
+        $asset = Asset::with('reviews')->where('id', $id)->get();
 
         return response()->json([
             'Asset'=> $asset,
@@ -121,37 +121,48 @@ class AssetController extends Controller
 
         $this->authorize('update', $asset);
 
+        // Define o disco de acordo com o preço
         $disk = $validated['price'] > 0 ? 'private' : 'public';
 
-        // Se o disco de armazenamento mudou, mova o arquivo
+        // Se o disco mudou, mover o arquivo existente
         if ($disk !== $asset->storage_disk && $asset->file_path) {
-            $fileContent = Storage::disk($asset->storage_disk)->get($asset->file_path);
-            Storage::disk($disk)->put($asset->file_path, $fileContent);
-            Storage::disk($asset->storage_disk)->delete($asset->file_path);
+            if (Storage::disk($asset->storage_disk)->exists($asset->file_path)) {
+                $fileContent = Storage::disk($asset->storage_disk)->get($asset->file_path);
+                Storage::disk($disk)->put($asset->file_path, $fileContent);
+                Storage::disk($asset->storage_disk)->delete($asset->file_path);
+            }
             $validated['storage_disk'] = $disk;
         }
 
+        // Se um novo arquivo foi enviado
         if ($request->hasFile('file')) {
             if ($asset->file_path && Storage::disk($asset->storage_disk)->exists($asset->file_path)) {
                 Storage::disk($asset->storage_disk)->delete($asset->file_path);
             }
 
             $path = $request->file('file')->store('assets', $disk);
+
             $validated['file_path'] = $path;
             $validated['format'] = $request->file('file')->getClientOriginalExtension();
             $validated['storage_disk'] = $disk;
+            $validated['preview_path'] = ($validated['type'] === 'image') ? $path : null;
 
-            if ($validated['type'] === 'image') {
-                $validated['preview_path'] = $path;
+        } else {
+            // Atualiza o disco mesmo sem upload novo
+            $validated['storage_disk'] = $disk;
+
+            // Ajusta preview mesmo sem novo arquivo
+            if ($validated['type'] === 'image' && $asset->file_path) {
+                $validated['preview_path'] = $asset->file_path;
             } else {
                 $validated['preview_path'] = null;
             }
-        } else {
+
             unset($validated['file']);
-            $validated['storage_disk'] = $disk;
         }
 
-        $asset->update($validated);
+        // Atualiza os campos sem risco de MassAssignment
+        $asset->forceFill($validated)->save();
 
         return response()->json([
             'message' => 'Asset updated successfully.',
