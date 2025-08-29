@@ -8,17 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body class="font-poppins text-gray-800 min-h-screen flex flex-col bg-zinc-100">
-    <header class="bg-zinc-700 text-amber-50 dark:black ">
-        <div class="mx-auto max-w-7xl flex justify-between items-center py-4">
+    <header class="bg-zinc-700 text-amber-50 dark:black">
+        <div class="mx-auto max-w-6xl flex justify-between items-center py-4">
             <a href="{{ route('home') }}">
                 <h1 class="text-4xl">AssetsHub</h1>
             </a>
             <div class="flex items-center border rounded-md overflow-hidden">
-                <input
-                    type="text"
-                    placeholder="Buscar..."
-                    class="flex-1 px-4 py-1 focus:outline-none"
-                />
+                <input 
+                type="text" 
+                placeholder="Buscar..." 
+                autocomplete="nope" 
+                class="flex-1 px-4 py-1 focus:outline-none"/>
                 <button class="px-3">
                     🔍
                 </button>
@@ -26,10 +26,11 @@
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
             <ul class="flex gap-4 text-sm items-center">
-                <li>Home</li>
-                <li>Wishlist</li>
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="{{ route('assets.upload-asset-form') }}">Upload</a></li>
                 @if (auth()->check())
-                    <a href="{{ route('settings.profile') }}">
+                    <a href="{{ route('profile.profile-page', Auth::user()->id) }}">
                         <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" alt="Avatar" class="w-8 h-8 rounded-full">
                     </a>
                 @else
@@ -40,14 +41,25 @@
     </header>
 
     <main class="min-h-screen">
-        <div class="mx-auto max-w-7xl">
+        @if (session('success'))
+            <div 
+                x-data="{ show: true }" 
+                x-init="setTimeout(() => show = false, 5000)" 
+                x-show="show"
+                x-transition
+                class="p-3 mb-3 rounded bg-green-100 text-green-800"
+            >
+                {{ session('success') }}
+            </div>
+        @endif
+        <div class="mx-auto max-w-6xl">
             {{ $slot }}
         </div>
     </main>
 
     <footer>
         <div class="bg-zinc-800 text-amber-50 p-[100px] mt-10">
-            <div class="mx-auto max-w-7xl px-4 flex justify-between items-center">
+            <div class="mx-auto max-w-6xl px-4 flex justify-between items-center">
                 <div class="flex flex-col gap-4 w-2/3">
                     <h2 class="text-4xl mb-8">AssetsHub</h2>
                     <p>“Training morning to night, once you have polished it to perfection, 

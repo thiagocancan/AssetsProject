@@ -55,10 +55,19 @@
 
             </div>
 
-            <div class="flex space-x-6 text-sm">
-                <div class="flex space-x-1">
-                    <dt class="font-medium">Size:</dt>
-                    <dd class="text-zinc-500">{{ $size }}</dd>
+            <div class="flex gap-5">     
+                <div class="flex text-sm">
+                    <div class="flex space-x-1">
+                        <dt class="font-medium">Size:</dt>
+                        <dd class="text-zinc-500">{{ $size }}</dd>
+                    </div>
+                </div>
+
+                <div class="flex text-sm">
+                    <div class="flex space-x-1">
+                        <dt class="font-medium">Create at:</dt>
+                        <dd class="text-zinc-500">{{ $asset->created_at}}</dd>
+                    </div>
                 </div>
             </div>
         
