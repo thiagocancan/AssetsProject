@@ -3,21 +3,19 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Asset;
 
 class AssetsList extends Component
 {
-    public $assets;
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->assets = Asset::latest()->with('user')->get() ?? collect([]);
-    }
+    protected $paginationTheme = 'tailwind';
 
     public function render()
     {
         return view('livewire.assets.assets-list', [
-            'assets' => $this->assets,
-        ]) ->layout('components.layouts.base', ['title' => 'Assets']);
+            'assets' => Asset::latest()->with('user')->paginate(20),
+        ])->layout('components.layouts.base', ['title' => 'Assets']);
     }
 }
