@@ -5,6 +5,7 @@ use Livewire\Volt\Volt;
 use App\Livewire\AssetsList;
 use App\Livewire\AssetPage;
 use App\Livewire\ProfilePage;
+use App\Livewire\UploadAssetForm;
 
 // Route::get('/', function () {
 //     return view('assets.assets-list');
@@ -24,6 +25,9 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/upload', UploadAssetForm::class)
+    ->name('assets.upload-asset-form');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
