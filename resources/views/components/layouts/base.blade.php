@@ -11,28 +11,46 @@
     <header class="bg-zinc-700 text-amber-50 dark:black">
         <div class="mx-auto max-w-6xl flex justify-between items-center py-4">
             <a href="{{ route('home') }}">
-                <h1 class="text-4xl">AssetsHub</h1>
+                <h1 class="text-2xl">AssetsHub</h1>
             </a>
-            <div class="flex items-center border rounded-md overflow-hidden">
-                <input 
-                type="text" 
-                placeholder="Buscar..." 
-                autocomplete="nope" 
-                class="flex-1 px-4 py-1 focus:outline-none"/>
-                <button class="px-3">
-                    🔍
-                </button>
+            <div class="flex-1 max-w-md mx-8">
+                @livewire('search-bar')
             </div>
-                @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-
+            @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             <ul class="flex gap-4 text-sm items-center">
                 <li><a href="{{ route('home') }}">Home</a></li>
                 <li><a href="#">Wishlist</a></li>
+                <li class="flex items-center space-x-1">
+                    <a href="{{ route('mycart') }}">My Cart</a>
+                    @if(count(session('cart', [])) > 0)
+                    <div class="bg-orange-600/90 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">
+                        {{ count(session('cart', [])) }}
+                    </div>
+                    @endif
+                </li>
                 <li><a href="{{ route('assets.upload-asset-form') }}">Upload</a></li>
                 @if (auth()->check())
-                    <a href="{{ route('profile.profile-page', Auth::user()->id) }}">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" alt="Avatar" class="w-8 h-8 rounded-full">
-                    </a>
+                    <div class="relative group inline-block">
+                        <!-- Avatar -->
+                        <a href="{{ route('myOrders') }}">
+                            <img 
+                                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" 
+                                alt="Profile" 
+                                class="w-7 h-7 rounded-full cursor-pointer"
+                            >
+                        </a>
+
+
+                        <!-- Dropdown -->
+                        <div class="absolute right-0 mt-2 w-48 bg-white text-zinc-800 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
+                            <a href="{{ route('profile.profile-page', auth()->id()) }}" class="block px-4 py-2 hover:bg-gray-100">Account</a>
+                            <a href="{{ route('myOrders') }}" class="block px-4 py-2 hover:bg-gray-100">My Orders</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer">Logout</button>
+                            </form>
+                        </div>
+                    </div>
                 @else
                     <li class="bg-orange-600/90 p-2 rounded-lg"><a href="{{ route('login') }}">Sign in</a></li>
                 @endif
