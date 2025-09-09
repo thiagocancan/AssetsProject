@@ -19,6 +19,7 @@ class UploadAssetForm extends Component
     public $category;
     public $price;
     public $file;
+    public $imagePreview;
 
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -27,6 +28,7 @@ class UploadAssetForm extends Component
         'category' => 'required|string|max:100',
         'price' => 'nullable|numeric|min:0',
         'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
+        'imagePreview' => 'required|file|mimes:jpeg,png,jpg|max:10240',
         'details' => 'nullable|string',
         'included' => 'nullable|string',
     ];
@@ -44,7 +46,7 @@ class UploadAssetForm extends Component
         }
 
         $path = $this->file->store('assets', $disk);
-        $previewPath = $this->file->store('assets/previewPath', 'public');
+        $previewPath = $this->imagePreview->store('assets/previewPath', 'public');
 
         // $previewPath = null;
         // if ($validated['type'] === 'image') {

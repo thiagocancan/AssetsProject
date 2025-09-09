@@ -69,10 +69,15 @@
                     <label class="w-full" for="file">File</label>
                     <input wire:model="file" type="file" class="px-3 py-4 w-full border-gray-300 border border-dashed rounded-lg cursor-pointer">
                     @error('file') <p class="mt-3 rounded text-sm bg-zinc-700 text-amber-50 px-3 py-3 w-fit">⚠️ {{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="w-full" for="imagePreview">Image previewFile</label>
+                    <input wire:model="imagePreview" type="file" class="px-3 py-4 w-full border-gray-300 border border-dashed rounded-lg cursor-pointer">
+                    @error('imagePreview') <p class="mt-3 rounded text-sm bg-zinc-700 text-amber-50 px-3 py-3 w-fit">⚠️ {{ $message }}</p> @enderror
 
-                    @if ($file)
+                    @if ($imagePreview)
                         <div class="mt-4">
-                            <img src="{{ $file->temporaryUrl() }}" class="w-48 h-48 object-cover rounded">
+                            <img src="{{ $imagePreview->temporaryUrl() }}" class="w-48 h-48 object-cover rounded">
                         </div>
                     @endif
                 </div>
