@@ -31,7 +31,7 @@ class ProfilePage extends Component
 
         $this->assets_count = Asset::where('user_id', request()->route('user_id'))->count();
 
-        $this->reviews_count = Review::whereHas('asset', function ($q) {
+        $this->reviews_count = Review::where('status', 'approved')->whereHas('asset', function ($q) {
             $q->where('user_id', $this->user->id);
         })->count();
     }
@@ -42,7 +42,7 @@ class ProfilePage extends Component
             ->where('user_id', $this->user->id)
             ->paginate(20, pageName: 'page_assets');
 
-        $reviews = Review::latest()
+        $reviews = Review::where('status', 'approved')->latest()
             ->with('asset', 'user')
             ->whereHas('asset', fn ($q) => $q->where('user_id', $this->user->id))
             ->paginate(5, pageName: 'page_reviews');
