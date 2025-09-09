@@ -21,7 +21,7 @@
         @forelse($assets as $asset)
             <div class="shadow-md">
                 <div class="h-50 flex flex-col justify-between p-4 bg-white dark:bg-gray-800" 
-                     style="background-image: url('https://picsum.photos/400/300?random={{ rand() }}'); 
+                     style="background-image: url('{{ asset('storage/' . $asset->preview_path) }}'); 
                             background-size: cover; background-position: center;">
                     <span class="bg-zinc-800 w-fit px-2 py-1 rounded text-sm text-accent-foreground">{{ $asset->type }}</span>
                     @if($asset->price == 0)
@@ -38,7 +38,7 @@
                             <img class="w-7 h-7 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($asset->user->name) }}&background=random" alt="">
                             <span>{{ $asset->user->name }}</span>
                         </div>
-                        <div>🌟 4.8</div>
+                        <div>🌟 {{ number_format($asset->reviews->avg('rating'), 1) }}</div>
                     </div>
                     <div class="flex gap-2 mt-auto">
                         <a class="text-sm text-amber-50 bg-orange-600/90 py-1 px-3" href="{{ route('assets.asset-page', $asset->id) }}">Details</a>

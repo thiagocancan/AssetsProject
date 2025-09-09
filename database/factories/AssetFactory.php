@@ -21,8 +21,9 @@ class AssetFactory extends Factory
             'description' => $this->faker->sentence(),
             'category' => $this->faker->randomElement(['natureza', 'tecnologia', 'arte', 'pessoas']),
             'type' => $this->faker->randomElement(['image', 'video', '3d_model']),
-            'file_path' => $this->faker->imageUrl(),
-            'price' => $this->faker->randomFloat(2, 0, 100),
+            'file_path' => 'assets/w1YyxCDNpB4qK2OAyvBV7cQx76QCLIZIo2nzcPZ6.obj',
+            'preview_path' => 'public/assets/previewPath/QIyHMUf2N7VISWpOrFDou4zdSDyFz9dpRIhIDBEN.png',
+            'price' => $this->faker->randomFloat(2, 1, 100),
             'user_id' => \App\Models\User::factory(),
         ];
     }

@@ -52,7 +52,7 @@
                                     <div class="flex items-center justify-center text-amber-50 text-sm w-[24px] h-[24px] rounded-full bg-orange-500">JD</div>
                                     <span class="text-zinc-500 font-normal text-sm">{{ $asset->user->name }}</span>
                                 </div>
-                                <div class="text-zinc-500 font-normal text-sm">🌟 4.8</div>
+                                <div class="text-zinc-500 font-normal text-sm">🌟 {{ number_format($asset->reviews->avg('rating'), 1) }}</div>
                             </div>
                             <div class="flex gap-2 mt-auto">
                                 <a class="text-sm text-amber-50 bg-orange-600/90 py-1 px-3" href="{{ route('assets.asset-page', $asset->id) }}">Details</a>
