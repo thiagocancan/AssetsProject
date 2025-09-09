@@ -29,14 +29,13 @@ class OrderController extends Controller
         $validated = $request->validate([
             'items' => 'required|array',
             'items.*.asset_id' => 'required|exists:assets,id',
-            'items.*.quantity' => 'required|integer|min:1',
         ]);
 
         $order = Order::create([
             'user_id' => auth()->id(),
             'status' => 'pending',
             'total' => collect($validated['items'])->sum(function ($item) {
-                return $item['quantity'] * \App\Models\Asset::find($item['asset_id'])->price;
+                return \App\Models\Asset::find($item['asset_id'])->price;
             }),
         ]);
 
@@ -44,7 +43,6 @@ class OrderController extends Controller
             OrderItem::create([
                 'order_id' => $order->id,
                 'asset_id' => $item['asset_id'],
-                'quantity' => $item['quantity'],
                 'price' => \App\Models\Asset::find($item['asset_id'])->price,
             ]);
         }
