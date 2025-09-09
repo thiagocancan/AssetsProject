@@ -6,6 +6,8 @@ use App\Livewire\AssetsList;
 use App\Livewire\AssetPage;
 use App\Livewire\ProfilePage;
 use App\Livewire\UploadAssetForm;
+use App\Livewire\MyCart;
+use App\Livewire\OrderAsset;
 
 // Route::get('/', function () {
 //     return view('assets.assets-list');
@@ -15,7 +17,7 @@ Route::get('/', AssetsList::class)
     ->name('home');
 
 Route::get('/asset/{asset}', AssetPage::class)
-    ->name('assets.asset-page');
+->name('assets.asset-page');
 
 Route::get('/profile/{user_id}', ProfilePage::class)
     ->name('profile.profile-page');
@@ -27,6 +29,12 @@ Route::view('dashboard', 'dashboard')
 Route::middleware(['auth'])->group(function () {
     Route::get('/upload', UploadAssetForm::class)
     ->name('assets.upload-asset-form');
+
+    Route::get('/mycart', MyCart::class)
+    ->name('mycart');
+
+    Route::get('/orders', OrderAsset::class)
+    ->name('myOrders');
 
     Route::redirect('settings', 'settings/profile');
 

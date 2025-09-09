@@ -44,11 +44,12 @@ class UploadAssetForm extends Component
         }
 
         $path = $this->file->store('assets', $disk);
+        $previewPath = $this->file->store('assets/previewPath', 'public');
 
-        $previewPath = null;
-        if ($validated['type'] === 'image') {
-            $previewPath = $path;
-        }
+        // $previewPath = null;
+        // if ($validated['type'] === 'image') {
+        //     $previewPath = $path;
+        // }
 
         $combinedText = "✅ Description\n" . ($validated['description'] ?? '-') . "\n\n"
             . "⚙️ Technical Details\n" . ($validated['details'] ?? '-') . "\n\n"

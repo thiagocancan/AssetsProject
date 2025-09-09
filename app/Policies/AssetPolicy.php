@@ -29,7 +29,7 @@ class AssetPolicy
      */
     public function download(User $user, Asset $asset): bool
     {
-        return $user->hasBought($asset) || $user->isAdmin() || $asset->isPublic();
+        return $user->hasBought($asset) || $user->id == $asset->user_id || $user->isAdmin() || $asset->isPublic();
     }
 
     /**

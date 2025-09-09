@@ -41,7 +41,7 @@
                             @if($asset->price  == 0)
                                 <span class="self-end bg-green-300 w-fit px-2 py-1 text-sm">Free</span>
                             @else
-                                <span class="self-end bg-orange-600/90 w-fit px-2 py-1 text-sm text-amber-50">R$ {{ number_format($asset->price, 2, ',', '.') }}</span>
+                                <span class="self-end bg-orange-600/90 w-fit px-2 py-1 text-sm text-amber-50">R$ {{ number_format($asset->price, 2) }}</span>
                             @endif
                         </div>
                         <div class="p-4 bg-white dark:bg-gray-800 flex flex-col gap-2 h-50">

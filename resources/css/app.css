@@ -45,6 +45,10 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+
+    ::selection {
+        @apply bg-orange-600/90 text-amber-50;
+    }
 }
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
