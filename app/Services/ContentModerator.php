@@ -20,7 +20,7 @@ class ContentModerator
     $response = $this->client->post(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
         [
-            'verify' => false, // 👈 ignora SSL (use só em dev!)
+            'verify' => storage_path('certs/cacert.pem'),
             'query' => [
                 'key' => $this->apiKey,
             ],
