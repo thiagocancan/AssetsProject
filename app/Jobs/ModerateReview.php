@@ -27,9 +27,14 @@ class ModerateReview implements ShouldQueue
 
         if (!$review) return;
 
-        $isSafe = $moderator->validateReview($review->comment);
+        try {
+            $isSafe = $moderator->validateReview($review->comment);
+            $review->status = $isSafe ? 'approved' : 'rejected';
+        } catch (\Exception $e) {
+            \Log::error("Moderation review error {$this->reviewId}: " . $e->getMessage());
+            $review->status = 'error';
+        }
 
-        $review->status = $isSafe ? 'approved' : 'rejected';
         $review->save();
     }
 }

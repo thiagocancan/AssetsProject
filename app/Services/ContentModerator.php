@@ -38,6 +38,10 @@ class ContentModerator
 
         $data = json_decode($response->getBody(), true);
 
+        if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            throw new \Exception('API response error.');
+        }
+
         $result = strtolower($data['candidates'][0]['content']['parts'][0]['text'] ?? '');
 
         return trim($result) === 'safe';
