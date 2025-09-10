@@ -37,7 +37,15 @@
     <dl class="flex shadow-md bg-zinc-100 p-7 mt-3 justify-around">
         <a href="{{ route('profile.profile-page', $asset->user_id) }}">
             <div class="flex space-x-3 items-center">
-                <img class="size-14 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($asset->user->name) }}&background=random" alt="Test">
+                <img
+                    src="{{ 
+                        $asset->user->profile && $asset->user->profile->avatar 
+                            ? asset('storage/' . $asset->user->profile->avatar) 
+                            : 'https://ui-avatars.com/api/?name=' . urlencode($asset->user->name) . '&background=random'
+                    }}" 
+                    alt="Profile" 
+                    class="size-6 cursor-pointer rounded-full"
+                />
                 <div class="text-sm">
                     <h3 class="font-semibold text-zinc-700">{{ $asset->user->name }}</h3>
                     <h2 class="text-zinc-500">{{ $asset->user->profile->bio }}</h2>
@@ -88,7 +96,15 @@
         <div class="mt-12">
             @foreach ($reviews as $review)
                 <div class="flex items-center space-x-3 pb-4 mb-4 border-b border-gray-300">
-                    <img class="size-10 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($review->user->name) }}&background=random" alt="user-avatar">
+                    <img
+                        src="{{ 
+                            $review->user->profile && $review->user->profile->avatar 
+                                ? asset('storage/' . $review->user->profile->avatar) 
+                                : 'https://ui-avatars.com/api/?name=' . urlencode($review->user->name) . '&background=random'
+                        }}" 
+                        alt="Profile" 
+                        class="size-6 cursor-pointer rounded-full"
+                    />
                     <div class="space-y-3 w-full">
                         <div class="flex justify-between">
                             <div class="flex items-center space-x-3">

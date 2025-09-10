@@ -35,7 +35,15 @@
                     <p class="text-zinc-500 font-normal text-sm truncate">{{ $asset->description }}</p>
                     <div class="flex items-center justify-between text-zinc-500 font-normal text-sm">
                         <div class="flex items-center gap-2">
-                            <img class="w-7 h-7 rounded-full" src="https://ui-avatars.com/api/?name={{ urlencode($asset->user->name) }}&background=random" alt="">
+                            <img
+                                src="{{ 
+                                    $asset->user->profile && $asset->user->profile->avatar 
+                                        ? asset('storage/' . $asset->user->profile->avatar) 
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode($asset->user->name) . '&background=random'
+                                }}" 
+                                alt="Profile" 
+                                class="size-6 cursor-pointer rounded-full"
+                            />
                             <span>{{ $asset->user->name }}</span>
                         </div>
                         <div>🌟 {{ number_format($asset->reviews->avg('rating'), 1) }}</div>

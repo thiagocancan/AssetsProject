@@ -1,16 +1,31 @@
 <div>
     <div class="bg-orange-600/90 px-6 mb-6">
         <div class="flex items-center text-amber-50 space-x-6 py-6 mx-auto max-w-7xl">
-            <img class="rounded-full size-35" src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random" alt="AvatarImage">
-            <div class="space-y-4">
-                <div class="flex">
-                    <h1 class="text-2xl font-medium">{{ $user->name }}</h1>
-                    <p class="text-sm">{{ $user->profile->location }}</p>
+            <img
+                src="{{ 
+                    $user->profile && $user->profile->avatar 
+                        ? asset('storage/' . $user->profile->avatar) 
+                        : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random'
+                }}" 
+                alt="Profile" 
+                class="size-35 cursor-pointer rounded-full"
+            />
+            <div class="space-y-4 w-full">
+                <div class="flex justify-between items-center">
+                    <div class="flex">
+                        <h1 class="text-2xl font-medium">{{ $user->name }}</h1>
+                        <p class="text-sm">{{ $user->profile->location }}</p>
+                    </div>
+                    @if(auth()->check() && auth()->id() === $user->id)
+                        <a href="{{route('profile.update-user-profile', '$user->id')}}" class="bg-amber-50 text-orange-600/90 text-sm rounded px-3 py-1">Edit Profile</a>
+                    @endif
                 </div>
-                <p>6.2K Followers</p>
-                <button class="border px-4 py-1 hover:border-zinc-700 hover:text-zinc-700 cursor-pointer">follow</button>
-                <button class="border px-4 py-1 hover:border-zinc-700 hover:text-zinc-700 cursor-pointer">contact</button>
                 <p class="text-sm">{{ $user->profile->bio }}</p>
+                <div>
+                    <p class="text-sm">6.2K Followers</p>
+                    <button class="text-sm border px-4 py-1 hover:border-zinc-700 hover:text-zinc-700 cursor-pointer">follow</button>
+                    <button class="text-sm border px-4 py-1 hover:border-zinc-700 hover:text-zinc-700 cursor-pointer">contact</button>
+                </div>
             </div>
         </div>
     </div>
@@ -49,7 +64,15 @@
                             <p class="text-zinc-500 font-normal text-sm truncate">{{ $asset->description }}</p>
                             <div class="flex items-center justify-between text-zinc-500 font-normal text-sm">
                                 <div class="flex items-center gap-2">
-                                    <div class="flex items-center justify-center text-amber-50 text-sm w-[24px] h-[24px] rounded-full bg-orange-500">JD</div>
+                                    <img
+                                        src="{{ 
+                                            $asset->user->profile && $asset->user->profile->avatar 
+                                                ? asset('storage/' . $asset->user->profile->avatar) 
+                                                : 'https://ui-avatars.com/api/?name=' . urlencode($asset->user->name) . '&background=random'
+                                        }}" 
+                                        alt="Profile" 
+                                        class="size-6 cursor-pointer rounded-full"
+                                    />
                                     <span class="text-zinc-500 font-normal text-sm">{{ $asset->user->name }}</span>
                                 </div>
                                 <div class="text-zinc-500 font-normal text-sm">🌟 {{ number_format($asset->reviews->avg('rating'), 1) }}</div>
@@ -77,7 +100,15 @@
                         </div>
                             <p class="text-sm text-zinc-700">{{ $review->comment }}</p>
                         <div class="flex items-center space-x-3">
-                            <img class="rounded-full size-6" src="https://ui-avatars.com/api/?name={{ urlencode($review->user->name) }}&background=random" alt="reviewer name">
+                            <img
+                                src="{{ 
+                                    $review->user->profile && $review->user->profile->avatar 
+                                        ? asset('storage/' . $review->user->profile->avatar) 
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode($review->user->name) . '&background=random'
+                                }}" 
+                                alt="Profile" 
+                                class="size-6 cursor-pointer rounded-full"
+                            />
                             <h3 class="text-sm">{{ $review->user->name }} - {{ $review->created_at->diffForHumans() }}</h3>
                         </div>
                     </div>

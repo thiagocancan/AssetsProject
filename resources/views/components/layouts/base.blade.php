@@ -34,12 +34,15 @@
                         <!-- Avatar -->
                         <a href="{{ route('myOrders') }}">
                             <img 
-                                src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" 
+                                src="{{ 
+                                    Auth::user()->profile && Auth::user()->profile->avatar 
+                                        ? asset('storage/' . Auth::user()->profile->avatar) 
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=random' 
+                                }}" 
                                 alt="Profile" 
                                 class="w-7 h-7 rounded-full cursor-pointer"
                             >
                         </a>
-
 
                         <!-- Dropdown -->
                         <div class="absolute right-0 mt-2 w-48 bg-white text-zinc-800 border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
@@ -93,8 +96,5 @@
             </div>
         </div>
     </footer>
-    
-@livewireScripts
-@vite('resources/js/app.js')
 </body>
 </html>
