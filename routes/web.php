@@ -8,6 +8,7 @@ use App\Livewire\ProfilePage;
 use App\Livewire\UploadAssetForm;
 use App\Livewire\MyCart;
 use App\Livewire\OrderAsset;
+use App\Livewire\UpdateUserProfile;
 
 // Route::get('/', function () {
 //     return view('assets.assets-list');
@@ -32,6 +33,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/mycart', MyCart::class)
     ->name('mycart');
+
+    Route::get('/updateuser', UpdateUserProfile::class)
+    ->name('userupdate');
 
     Route::get('/orders', OrderAsset::class)
     ->name('myOrders');

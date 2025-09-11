@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Asset;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AssetsList extends Component
 {
@@ -38,6 +40,14 @@ class AssetsList extends Component
         }
 
         $assets = $query->paginate(20);
+
+        foreach($assets as $asset) {
+            if (Str::startsWith(Storage::mimeType($asset->preview_path), 'image')) {
+                $asset->showType = 'img';
+            } else {
+                $asset->showType = 'vid';
+            }
+        }
 
         return view('livewire.assets.assets-list', [
             'assets' => $assets,

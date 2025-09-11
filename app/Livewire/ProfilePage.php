@@ -7,6 +7,8 @@ use Livewire\WithPagination;
 use App\Models\User;
 use App\Models\Asset;
 use App\Models\Review;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProfilePage extends Component
 {
@@ -41,6 +43,14 @@ class ProfilePage extends Component
         $assets = Asset::latest()
             ->where('user_id', $this->user->id)
             ->paginate(20, pageName: 'page_assets');
+
+        foreach($assets as $asset) {
+            if (Str::startsWith(Storage::mimeType($asset->preview_path), 'image')) {
+                $asset->showType = 'img';
+            } else {
+                $asset->showType = 'vid';
+            }
+        }
 
         $reviews = Review::where('status', 'approved')->latest()
             ->with('asset', 'user')

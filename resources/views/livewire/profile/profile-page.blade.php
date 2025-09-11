@@ -17,7 +17,7 @@
                         <p class="text-sm">{{ $user->profile->location }}</p>
                     </div>
                     @if(auth()->check() && auth()->id() === $user->id)
-                        <a href="{{route('profile.update-user-profile', '$user->id')}}" class="bg-amber-50 text-orange-600/90 text-sm rounded px-3 py-1">Edit Profile</a>
+                        <a href="{{route('userupdate', '$user->id')}}" class="bg-amber-50 text-orange-600/90 text-sm rounded px-3 py-1">Edit Profile</a>
                     @endif
                 </div>
                 <p class="text-sm">{{ $user->profile->bio }}</p>
@@ -49,16 +49,37 @@
             <div class="grid grid-cols-4 gap-6">
                 @foreach($assets as $asset)
                     <div class="shadow-md">
-                        <div class="h-50 flex flex-col justify-between p-4 bg-white dark:bg-gray-800" 
-                            style="background-image: url('{{ asset('storage/' . $asset->preview_path) }}'); 
-                            background-size: cover; background-position: center;">
-                            <span class="bg-zinc-800 w-fit px-2 py-1 rounded text-sm text-accent-foreground">{{ $asset->type }}</span>
-                            @if($asset->price  == 0)
-                                <span class="self-end bg-green-300 w-fit px-2 py-1 text-sm">Free</span>
-                            @else
-                                <span class="self-end bg-orange-600/90 w-fit px-2 py-1 text-sm text-amber-50">R$ {{ number_format($asset->price, 2) }}</span>
-                            @endif
-                        </div>
+                        @if($asset->showType === 'img')
+                            <div class="h-50 flex flex-col justify-between p-4 bg-white dark:bg-gray-800" 
+                                style="background-image: url('{{ asset('storage/' . $asset->preview_path) }}'); 
+                                        background-size: cover; background-position: center;">
+                                <span class="bg-zinc-800 w-fit px-2 py-1 rounded text-sm text-accent-foreground">{{ $asset->type }}</span>
+                                @if($asset->price == 0)
+                                    <span class="self-end bg-green-300 w-fit px-2 py-1 text-sm">Free</span>
+                                @else
+                                    <span class="self-end bg-orange-600/90 w-fit px-2 py-1 text-sm text-amber-50">$ {{ number_format($asset->price, 2) }}</span>
+                                @endif
+                            </div>
+                        @else
+                            <div class="relative h-50 w-full bg-white dark:bg-gray-800 overflow-hidden rounded">
+                                <video class="absolute top-0 left-0 w-full h-full object-cover pointer-events-none" autoplay muted loop>
+                                    <source src="{{ asset('storage/' . $asset->preview_path) }}">
+                                    Seu navegador não suporta o vídeo.
+                                </video>
+
+                                <div class="relative z-10 flex flex-col justify-between h-full w-full p-4">
+                                    <span class="bg-zinc-800 w-fit px-2 py-1 rounded text-sm text-accent-foreground">{{ $asset->type }}</span>
+
+                                    @if($asset->price == 0)
+                                        <span class="bg-green-300 w-fit px-2 py-1 text-sm self-end">Free</span>
+                                    @else
+                                        <span class="bg-orange-600/90 w-fit px-2 py-1 text-sm text-amber-50 self-end">
+                                            $ {{ number_format($asset->price, 2) }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
                         <div class="p-4 bg-white dark:bg-gray-800 flex flex-col gap-2 h-50">
                             <h3 class="text-lg font-semibold">{{ $asset->title }}</h3>
                             <p class="text-zinc-500 font-normal text-sm truncate">{{ $asset->description }}</p>

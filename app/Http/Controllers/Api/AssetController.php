@@ -47,18 +47,19 @@ class AssetController extends Controller
             'category' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
+            'imagePreview' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov|max:5120',
         ]);
 
         $this->authorize('create', Asset::class);
 
         $disk = $validated['price'] > 0 ? 'private' : 'public';
 
-        $path = $request->file('file')->store('assets', $disk);
-
-        $previewPath = null;
-        if ($validated['type'] === 'image') {
-            $previewPath = $path;
+        if($validated['price'] === null) {
+            $validated['price'] = 0;
         }
+
+        $path = $request->file('file')->store('assets', $disk);
+        $previewPath = $request->file('imagePreview')->store('assets/previewPath', 'public');
 
         $asset = Asset::create([
             'user_id' => auth()->id(),

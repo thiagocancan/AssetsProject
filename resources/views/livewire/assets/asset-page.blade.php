@@ -7,8 +7,14 @@
     <h1 class="text-orange-600/90 font-bold text-3xl mt-6">{{ $asset->title }}</h1>
 
     <div class="flex space-x-6 mt-3">
-        <img class="w-[600px] h-[600px] pointer-events-none select-none" src="{{ asset('storage/' . $asset->preview_path) }}" alt="">
-        
+        @if($asset->showType === 'img')
+            <img class="w-[600px] h-[600px] pointer-events-none select-none" src="{{ asset('storage/' . $asset->preview_path) }}" alt="">
+        @else
+            <video class="w-[600px] h-[600px] object-cover pointer-events-none select-none" autoplay muted loop>
+                <source src="{{ asset('storage/' . $asset->preview_path) }}">
+                Seu navegador não suporta o vídeo.
+            </video>
+        @endif
         <div class="w-full flex flex-col justify-between">
             <p class="text-zinc-500 font-normal whitespace-pre-line">{{ $asset->description }}</p>
 
@@ -115,7 +121,7 @@
                                     @endfor
                                 </p>
                             </div>
-                            <p class="text-sm text-zinc-500">{{ $asset->created_at->diffForHumans() }}</p>
+                            <p class="text-sm text-zinc-500">{{ $review->created_at->diffForHumans() }}</p>
                         </div>
                         <p class="text-sm text-zinc-500">{{ $review->comment }}</p>
                     </div>

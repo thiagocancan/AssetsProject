@@ -24,11 +24,10 @@ class UploadAssetForm extends Component
     protected $rules = [
         'title' => 'required|string|max:255',
         'description' => 'required|string',
-        'type' => 'required|in:image,video,3d_model',
         'category' => 'required|string|max:100',
         'price' => 'nullable|numeric|min:0',
-        'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
-        'imagePreview' => 'required|file|mimes:jpeg,png,jpg|max:10240',
+        'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov,obj,fbx,blend,max,3ds|max:51200',
+        'imagePreview' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov|max:5120',
         'details' => 'nullable|string',
         'included' => 'nullable|string',
     ];
@@ -43,6 +42,16 @@ class UploadAssetForm extends Component
 
         if($validated['price'] === null) {
             $validated['price'] = 0;
+        }
+
+        $extension = strtolower($this->file->getClientOriginalExtension());
+
+        if (in_array($extension, ['jpeg', 'png', 'jpg', 'gif'])) {
+            $validated['type'] = 'image';
+        } elseif (in_array($extension, ['mp4', 'avi', 'mov'])) {
+            $validated['type'] = 'video';
+        } else {
+            $validated['type'] = '3d model';
         }
 
         $path = $this->file->store('assets', $disk);

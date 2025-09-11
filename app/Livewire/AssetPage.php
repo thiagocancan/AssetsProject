@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Models\Asset;
 use App\Models\Review;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class AssetPage extends Component
@@ -25,6 +26,11 @@ class AssetPage extends Component
             ->latest()
             ->get();
 
+        if (Str::startsWith(Storage::mimeType($this->asset->preview_path), 'image')) {
+            $this->asset->showType = 'img';
+        } else {
+            $this->asset->showType = 'vid';
+        }
 
         $disk = $this->asset->storage_disk;
 

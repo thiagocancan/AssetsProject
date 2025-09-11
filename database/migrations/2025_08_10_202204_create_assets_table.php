@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('type', ['image', 'video', '3d_model']);
+            $table->enum('type', ['image', 'video', '3d model']);
             $table->string('category')->constrained()->onDelete('cascade');
             $table->string('file_path');
             $table->string('preview_path')->nullable();
