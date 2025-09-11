@@ -12,37 +12,37 @@ AssetsProject é um marketplace web de assets digitais construído em Laravel, p
 
 - Busca avançada por usuário, nome do asset e categoria
 
-- Reviews validadas por AI (Gemini)
+- Reviews validadas por Gemini AI (classifica o conteúdo como próprio ou impróprio)
 
 - Controle de permissões via Policies do Laravel
 
 ## Tipos de Assets
 ### Tipo	Formatos	Visualização
-- Modelos 3D	`.obj, .fbx`	Prévia 3D interativa
-- Artes 2D	`.jpg, .png, .psd`	Miniatura em galeria
-- Vídeos	`.mp4`	Player embutido ou capa de vídeo
+- Modelos 3D `.obj, .fbx`	Prévia 3D interativa
+- Artes 2D	`.jpeg, .jpg, .png, .gif`	Miniatura em galeria
+- Vídeos	`.mp4, .avi, .mov`	Player embutido ou capa de vídeo
 
 ## Tech Stack
 
 - Backend: Laravel + API REST
 
-- Frontend: Livewire / Inertia.js + TailwindCSS
+- Frontend: Livewire + TailwindCSS
 
 - Banco de dados: SQLite
 
-- Autenticação: Laravel Sanctum
+- Autenticação: Livewire + Laravel Sanctum para API
 
 - Armazenamento de assets: público ou privado (para assets pagos)
 
 ## Status Atual
 
-- CRUD completo de usuários, assets, orders e reviews
+- CRUD de usuários, assets, orders e reviews
 
 - Upload de arquivos com controle de acesso
 
 - Barra de busca funcional
 
-- Validação de reviews com Gemini AI (classificando conteúdo com safe ou unsafe)
+- Validação de reviews com Gemini AI
 
 - Páginas construídas com componentes Livewire
 
