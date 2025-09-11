@@ -50,6 +50,13 @@ AssetsProject é um marketplace web de assets digitais construído em Laravel, p
 
 Siga os passos abaixo para rodar o **AssetsProject** localmente:
 
+### Pré-requisitos
+
+- Node.js
+- PHP ^8.2
+- Laravel 12.0
+- npm 
+
 ### 1. Clone o repositório
 
 ```bash
