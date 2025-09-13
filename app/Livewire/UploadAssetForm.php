@@ -22,12 +22,12 @@ class UploadAssetForm extends Component
     public $imagePreview;
 
     protected $rules = [
-        'title' => 'required|string|max:255',
+        'title' => 'required|string|max:50',
         'description' => 'required|string',
         'category' => 'required|string|max:100',
         'price' => 'nullable|numeric|min:0',
-        'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov,obj,fbx,blend,max,3ds|max:51200',
-        'imagePreview' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov|max:5120',
+        'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov,obj,fbx,blend,max,3ds|max:153600',
+        'imagePreview' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov',
         'details' => 'nullable|string',
         'included' => 'nullable|string',
     ];

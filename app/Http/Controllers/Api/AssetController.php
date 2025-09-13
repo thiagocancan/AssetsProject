@@ -43,10 +43,9 @@ class AssetController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'type' => 'required|in:image,video,3d_model',
             'category' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,obj,fbx|max:10240',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov,obj,fbx,blend,max,3ds|max:153600',
             'imagePreview' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,avi,mov|max:5120',
         ]);
 
@@ -56,6 +55,16 @@ class AssetController extends Controller
 
         if($validated['price'] === null) {
             $validated['price'] = 0;
+        }
+
+        $extension = strtolower($request->file->getClientOriginalExtension());
+
+        if (in_array($extension, ['jpeg', 'png', 'jpg', 'gif'])) {
+            $validated['type'] = 'image';
+        } elseif (in_array($extension, ['mp4', 'avi', 'mov'])) {
+            $validated['type'] = 'video';
+        } else {
+            $validated['type'] = '3d model';
         }
 
         $path = $request->file('file')->store('assets', $disk);
