@@ -8,7 +8,7 @@
             {{ $errorMessage }}
         </div>
     @endif
-    <div class="bg-orange-600/90 p-8 w-screen absolute left-0 -z-30"> <h2 class="text-amber-50/0 text-1xl">My Cart</h2></div>
+    <div class="bg-orange-600/90 p-8 w-full absolute left-0 -z-30"> <h2 class="text-amber-50/0 text-1xl">My Cart</h2></div>
     <div class="bg-orange-600/0 py-8 mb-6">
         <h2 class="text-amber-50 text-2xl">My Cart</h2>
     </div>
