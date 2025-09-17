@@ -9,10 +9,17 @@ use App\Livewire\UploadAssetForm;
 use App\Livewire\MyCart;
 use App\Livewire\OrderAsset;
 use App\Livewire\UpdateUserProfile;
+use App\Http\Controllers\PaymentController;
 
-// Route::get('/', function () {
-//     return view('assets.assets-list');
-// })->name('home');
+Route::prefix('payment')->name('payment.')->group(function () {
+    Route::get('/create/{order}', [PaymentController::class, 'create'])->name('create');
+    Route::get('/success/{orderId}', [PaymentController::class, 'success'])->name('success');
+    Route::get('/failure/{orderId}', [PaymentController::class, 'failure'])->name('failure');
+    Route::get('/pending/{orderId}', [PaymentController::class, 'pending'])->name('pending');
+});
+
+// Webhook
+Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
 
 Route::get('/', AssetsList::class)
     ->name('home');

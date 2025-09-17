@@ -90,7 +90,7 @@ class User extends Authenticatable
     public function hasBought(Asset $asset)
     {
         return $this->orders()
-            ->where('status', 'completed')
+            ->where('status', 'approved')
             ->whereHas('items', function($q) use ($asset) {
                 $q->where('asset_id', $asset->id);
             })

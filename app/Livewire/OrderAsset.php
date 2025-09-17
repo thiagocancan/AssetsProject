@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Review;
+use App\Models\User;
 
 use App\Jobs\ModerateReview;
 
@@ -13,7 +14,7 @@ class OrderAsset extends Component
 {
     public $allOrders;
     public $pendingOrders;
-    public $completedOrders;
+    public $approvedOrders;
     public $activeTab = 'all';
     public $showModal = false;
     public $selectedAssetId = null;
@@ -37,9 +38,9 @@ class OrderAsset extends Component
                 ->get();
         }
 
-        if ($this->activeTab === 'completed') {
-            $this->completedOrders = Order::where('user_id', auth()->id())
-                ->where('status', 'completed')
+        if ($this->activeTab === 'approved') {
+            $this->approvedOrders = Order::where('user_id', auth()->id())
+                ->where('status', 'approved')
                 ->with('items.asset')
                 ->latest()
                 ->get();
@@ -47,7 +48,7 @@ class OrderAsset extends Component
 
         return view('livewire.assets.order-asset', [
             'pendingOrders' => $this->pendingOrders,
-            'completedOrders' => $this->completedOrders,
+            'approvedOrders' => $this->approvedOrders,
         ])->layout('components.layouts.base');
     }
 
@@ -57,10 +58,15 @@ class OrderAsset extends Component
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        $order->status = 'completed';
+        $order->status = 'approved';
         $order->save();
 
         session()->flash('message', "Order #{$order->id} paid succesfuly!");
+    }
+
+    public function payWithMercadoPago(Order $order)
+    {
+        return redirect()->route('payment.create', $order->id);
     }
 
     public function review()
