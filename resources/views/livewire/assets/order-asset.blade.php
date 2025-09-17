@@ -29,9 +29,9 @@
                 Pending Orders
             </button>
             <button 
-                wire:click="setTab('completed')" 
+                wire:click="setTab('approved')" 
                 class="hover:text-black cursor-pointer border-black
-                    @if($activeTab === 'completed') border-b text-black @endif">Completed Orders
+                    @if($activeTab === 'approved') border-b text-black @endif">Approved Orders
             </button>
         </div>
 
@@ -51,6 +51,7 @@
                         <p class="text-sm text-zinc-700">Total: ${{ number_format($allOrder->total, 2) }}</p>
                         @if($allOrder->status === 'pending')
                             <button wire:click="pay({{ $allOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay</button>
+                            <button wire:click="payWithMercadoPago({{ $allOrder }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay With Mercado Pago</button>
                         @endif
                     </div>
                 @endforeach
@@ -70,24 +71,25 @@
                         @endforeach
                         <p class="text-sm text-zinc-700">Total: ${{ number_format($pendingOrder->total, 2) }}</p>
                         <button wire:click="pay({{ $pendingOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay</button>
+                        <button wire:click="payWithMercadoPago({{ $pendingOrder }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay With Mercado Pago</button>
                     </div>
                 @endforeach
             </div>
-        @elseif($activeTab === 'completed')
+        @elseif($activeTab === 'approved')
             <div class="space-y-4">
-                @foreach($completedOrders as $completedOrder)
+                @foreach($approvedOrders as $approvedOrder)
                     <div class="border border-zinc-300 rounded p-6 space-y-4">
                         <div class="flex justify-between">
-                            <h2 class="font-medium text-sm">Order #{{ $completedOrder->id }} <span class="bg-orange-600/90 text-amber-50 px-1 py-1 rounded text-[11px]">{{ $completedOrder->status }}</span></h2>
-                            <p class="text-sm">{{ $completedOrder->created_at }}</p>
+                            <h2 class="font-medium text-sm">Order #{{ $approvedOrder->id }} <span class="bg-orange-600/90 text-amber-50 px-1 py-1 rounded text-[11px]">{{ $approvedOrder->status }}</span></h2>
+                            <p class="text-sm">{{ $approvedOrder->created_at }}</p>
                         </div>
-                        @foreach ($completedOrder->items as $item)
+                        @foreach ($approvedOrder->items as $item)
                             <div class="flex items-center space-x-2">
                                 <a href="{{ route('assets.asset-page', $item->asset->id) }}" class="text-sm"><span class="text-orange-600/90">{{ $item->asset->title }}</span> - ${{ number_format($item->asset->price, 2) }}</a>
                                 <button wire:click="openReviewModal({{ $item->asset->id }})" class="border px-1 py-1 border-orange-600/90 text-[13px] cursor-pointer">Review</button>
                             </div>
                         @endforeach
-                        <p class="text-sm text-zinc-700">Total: ${{ number_format($completedOrder->total, 2) }}</p>
+                        <p class="text-sm text-zinc-700">Total: ${{ number_format($approvedOrder->total, 2) }}</p>
                     </div>
                 @endforeach
             </div>

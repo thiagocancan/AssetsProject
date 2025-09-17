@@ -27,7 +27,7 @@ class OrderSeeder extends Seeder
                 // Create order
                 $order = Order::create([
                     'user_id' => $user->id,
-                    'status' => rand(0, 1) ? 'pending' : 'completed',
+                    'status' => rand(0, 1) ? 'pending' : 'approved',
                     'total' => 0, 
                 ]);
 

@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Asset;
 
-
 class MyCart extends Component
 {
     public $order;
@@ -63,23 +62,36 @@ class MyCart extends Component
             return;
         }
 
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'status' => 'pending',
-            'total' => collect($cart)->sum(fn($item) => $item['price']),
-        ]);
-
-        foreach ($cart as $assetId => $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'asset_id' => $assetId,
-                'price' => $item['price'],
+        try {
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'status' => 'pending',
+                'total' => 0,
             ]);
+
+            $total = 0;
+
+            foreach ($cart as $assetId => $item) {
+                $asset = Asset::findOrFail($assetId);
+                    
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'asset_id' => $assetId,
+                    'price'    => $asset->price,
+                ]);
+                $total += $asset->price;
+            }
+
+            $order->update(['total' => $total]);
+
+            session()->forget('cart');
+            $this->successMessage = "Successful order!";
+
+            return redirect()->route('myOrders');
+
+        } catch (\Exception $e) {
+            $this->error = 'An error occurred while creating the order: ' . $e->getMessage();
+            return;
         }
-
-        session()->forget('cart');
-        $this->successMessage = "Successful order!";
-
-        return redirect()->route('myOrders');
     }
 }

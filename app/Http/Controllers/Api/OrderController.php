@@ -74,7 +74,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $order->status = 'completed';
+        $order->status = 'approved';
         $order->save();
 
         return response()->json(['message' => 'Order approved successfully.'], 200);
