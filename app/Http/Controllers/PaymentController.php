@@ -88,7 +88,7 @@ class PaymentController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error while creating payment: ' . $e->getMessage());
-            
+
             return back()->with('error', 'Error while creating payment. Try again.');
         }
     }
@@ -175,7 +175,7 @@ class PaymentController extends Controller
             $client = new PaymentClient();
             $payment = $client->get($paymentId);
 
-            // Buscar o pedido pela referência externa
+            // Search order by external_reference
             $orderId = $payment->external_reference;
             $order = Order::find($orderId);
 
