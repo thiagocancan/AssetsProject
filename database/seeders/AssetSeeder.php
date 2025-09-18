@@ -19,10 +19,13 @@ class AssetSeeder extends Seeder
         foreach ($users as $user) {
             Asset::factory()->count(20)->create([
                 'user_id' => $user->id,
-                'file_path' => 'assets/tT5WVRlyXvGceBP9A2g1hQCsmybqPEN4PulJ4qwC.jpg',
-                'preview_path' => 'assets/preview_path/tT5WVRlyXvGceBP9A2g1hQCsmybqPEN4PulJ4qwC.jpg',
+                'title' => fake()->words(3, true),
+                'description' => fake()->paragraph(),
+                'file_path' => 'assets/Zn5lujOllbMdxonvHwzLUwII3J6JNUrOhwtFFJGD.jpg',
+                'preview_path' => 'assets/previewPath/Nedybaa1c13VQMdsqK88RI31XW6GTKFdFfPkx7nk.jpg',
                 'storage_disk' => 'private',
-                'price' => random_int(1, 20),
+                'type' => 'image',
+                'price' => 1,
             ]);
         }
     }
