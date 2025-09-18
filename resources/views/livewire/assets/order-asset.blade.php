@@ -50,7 +50,7 @@
                         @endforeach
                         <p class="text-sm text-zinc-700">Total: ${{ number_format($allOrder->total, 2) }}</p>
                         @if($allOrder->status === 'pending')
-                            <button wire:click="pay({{ $allOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay</button>
+                            <button wire:click="pay({{ $allOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Simulate Payment</button>
                             <button wire:click="payWithMercadoPago({{ $allOrder }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay With Mercado Pago</button>
                         @endif
                     </div>
@@ -70,7 +70,7 @@
                             </div>
                         @endforeach
                         <p class="text-sm text-zinc-700">Total: ${{ number_format($pendingOrder->total, 2) }}</p>
-                        <button wire:click="pay({{ $pendingOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay</button>
+                        <button wire:click="pay({{ $pendingOrder->id }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Simulate Payment</button>
                         <button wire:click="payWithMercadoPago({{ $pendingOrder }})" class="border px-4 py-1 border-orange-600/90 text-[13px] cursor-pointer">Pay With Mercado Pago</button>
                     </div>
                 @endforeach
