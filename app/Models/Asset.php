@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Asset extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -19,6 +21,7 @@ class Asset extends Model
         'type',
         'format',
         'price',
+        'storage_disk',
     ];
 
     // Relationships
@@ -38,4 +41,8 @@ class Asset extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function isPublic()
+    {
+        return $this->storage_disk === 'public';
+    }
 }

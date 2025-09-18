@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('asset_id')->constrained()->onDelete('cascade');
             $table->integer('rating'); // 1 to 5
             $table->text('comment')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

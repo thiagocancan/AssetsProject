@@ -17,8 +17,12 @@ class AssetSeeder extends Seeder
         $users = User::all();
 
         foreach ($users as $user) {
-            Asset::factory()->count(3)->create([
+            Asset::factory()->count(20)->create([
                 'user_id' => $user->id,
+                'file_path' => 'assets/tT5WVRlyXvGceBP9A2g1hQCsmybqPEN4PulJ4qwC.jpg',
+                'preview_path' => 'assets/preview_path/tT5WVRlyXvGceBP9A2g1hQCsmybqPEN4PulJ4qwC.jpg',
+                'storage_disk' => 'private',
+                'price' => random_int(1, 20),
             ]);
         }
     }

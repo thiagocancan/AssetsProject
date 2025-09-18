@@ -18,7 +18,7 @@ class Review extends Model
 
     public function user()
     {
-        return $this->belognsTo(User::class);
+        return $this->belongsTo(User::class);                                           
     }
 
     public function asset()

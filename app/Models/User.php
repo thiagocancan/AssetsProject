@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -57,5 +59,41 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->profile()->create([
+                'bio'    => null,
+                'avatar' => null,
+                'location'  => null,
+            ]);
+        });
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin ?? false;
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function hasBought(Asset $asset)
+    {
+        return $this->orders()
+            ->where('status', 'approved')
+            ->whereHas('items', function($q) use ($asset) {
+                $q->where('asset_id', $asset->id);
+            })
+            ->exists();
     }
 }

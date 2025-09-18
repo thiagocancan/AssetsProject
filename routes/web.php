@@ -2,18 +2,51 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\AssetsList;
+use App\Livewire\AssetPage;
+use App\Livewire\ProfilePage;
+use App\Livewire\UploadAssetForm;
+use App\Livewire\MyCart;
+use App\Livewire\OrderAsset;
+use App\Livewire\UpdateUserProfile;
+use App\Http\Controllers\PaymentController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::prefix('payment')->name('payment.')->group(function () {
+    Route::get('/create/{order}', [PaymentController::class, 'create'])->name('create');
+    Route::get('/success/{orderId}', [PaymentController::class, 'success'])->name('success');
+    Route::get('/failure/{orderId}', [PaymentController::class, 'failure'])->name('failure');
+    Route::get('/pending/{orderId}', [PaymentController::class, 'pending'])->name('pending');
+});
 
-Volt::route('/assets', 'pages.assets')->name('assets');
+// Webhook
+Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
+
+Route::get('/', AssetsList::class)
+    ->name('home');
+
+Route::get('/asset/{asset}', AssetPage::class)
+->name('assets.asset-page');
+
+Route::get('/profile/{user_id}', ProfilePage::class)
+    ->name('profile.profile-page');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/upload', UploadAssetForm::class)
+    ->name('assets.upload-asset-form');
+
+    Route::get('/mycart', MyCart::class)
+    ->name('mycart');
+
+    Route::get('/updateuser', UpdateUserProfile::class)
+    ->name('userupdate');
+
+    Route::get('/orders', OrderAsset::class)
+    ->name('myOrders');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
